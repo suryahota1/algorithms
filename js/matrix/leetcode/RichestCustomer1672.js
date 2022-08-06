@@ -1,0 +1,9 @@
+class RichestCustomer {
+    constructor () {
+
+    }
+
+    getRichestCustomer () {
+        
+    }
+}
