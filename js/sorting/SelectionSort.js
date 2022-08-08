@@ -1,27 +1,22 @@
 class SelectionSort {
 
-    swap ( arr, i, minIdx ) {
-        let temp = arr[minIdx];
-        arr[minIdx] = arr[i];
-        arr[i] = temp;
+    #swap ( arr, idx1, idx2 ) {
+        let temp = arr[idx1];
+        arr[idx1] = arr[idx2];
+        arr[idx2] = temp;
     }
-    
+
     sort ( arr ) {
-        let n = arr.length;
-        for ( let i = 0; i < n; i++ ) {
+        for ( let i = 0; i < arr.length - 1; i++ ) {
             let minIdx = i;
-            for ( let j = i + 1; j < n; j++ ) {
-                if ( arr[j] < arr[minIdx] ) {
-                    minIdx = j;
-                }
+            for ( let j = i + 1; j < arr.length; j ++ ) {
+                if ( arr[j] < arr[minIdx] ) minIdx = j;
             }
-            if ( minIdx !== i ) {
-                this.swap(arr, i, minIdx);
-            }
+            if ( minIdx != i ) this.#swap(arr, i, minIdx);
         }
-        console.log("arr", arr);
+        return arr;
     }
 }
 
 const aa = new SelectionSort();
-aa.sort([2, 7, 9, 1, 3, 4, 5, 78, 32]);
+console.log(aa.sort([2, 7, 9, 1, 3, 4, 5, 78, 32]));
