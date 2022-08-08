@@ -25,3 +25,11 @@ class BubbleSort {
 
 const aa = new BubbleSort();
 console.log(aa.sort([2, 777, 9, 1, 3, 4, 5, 78, 32]));
+
+/*
+1. This algorithm keeps traversing through the list and puts the largest element
+at the correct position.
+2. This can make n - 1 swaps at most in each iteration.
+3. This algorithm is not ideal when write operations are expensive.
+4. Worst case time complexity is O(N ^ 2).
+*/
