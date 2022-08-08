@@ -1,28 +1,27 @@
 class BubbleSort {
 
-    swap ( arr, i, j ) {
-        let temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+    #swap ( arr, idx1, idx2 ) {
+        let temp = arr[idx1];
+        arr[idx1] = arr[idx2];
+        arr[idx2] = temp;
     }
 
     sort ( arr ) {
-        let n = arr.length;
-        for ( let i = 0; i < n - 1; i++ ) {
+        let k = 0;
+        while ( k < arr.length ) {
             let swapped = false;
-            for ( let j = 0; j < n - i - 1; j++ ) {
-                if ( arr[j] > arr[j + 1] ) {
-                    this.swap(arr, j, j + 1);
+            for ( let i = 1; i < arr.length - k; i++ ) {
+                if ( arr[i] < arr[i - 1] ) {
                     swapped = true;
+                    this.#swap(arr, i, i - 1);
                 }
             }
-            if ( !swapped ) {
-                break;
-            }
+            if ( !swapped ) return arr;
+            k++;
         }
-        console.log(arr);
+        return arr;
     }
 }
 
 const aa = new BubbleSort();
-aa.sort([2, 7, 9, 1, 3, 4, 5, 78, 32]);
+console.log(aa.sort([2, 777, 9, 1, 3, 4, 5, 78, 32]));
