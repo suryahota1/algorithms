@@ -1,34 +1,33 @@
 class QuickSort {
 
-    sort ( arr, low, high ) {
-        if ( low >= high ) {
-            return;
-        }
-        const pIdx = this.partition(arr, low, high);
-        console.log(pIdx);
-        console.log(arr);
-        this.sort(arr, low, pIdx - 1);
-        this.sort(arr, pIdx + 1, high);
+    #swap ( arr, idx1, idx2 ) {
+        let temp = arr[idx1];
+        arr[idx1] = arr[idx2];
+        arr[idx2] = temp;
     }
 
-    swap ( arr, i, j ) {
-        let temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-    }
+    #partition ( arr, lo, hi ) {
+        let i = lo - 1, pivot = arr[hi];
+        // for ( let j = 0; j < hi; j++ ) {
+        //     if ( arr[j] < pivot ) this.#swap(arr, ++i, j);
+        // }
 
-    partition ( arr, low, high ) {
-        let pivot = arr[high];
-        let swapIdx = low - 1;
-        console.log("pivot", pivot);
-        console.log("swapIdx", swapIdx);
-        for ( let i = low; i <= high; i++ ) {
-            if ( arr[i] < pivot ) {
-                this.swap(arr, i, ++swapIdx);
+        for ( let j = lo; j <= hi; j++ ) {
+            if ( arr[j] < pivot ) {
+                this.#swap(arr, j, ++i);
             }
         }
-        this.swap(arr, high, ++swapIdx);
-        return swapIdx;
+
+        // this.#swap(arr, i + 1, hi);
+        this.#swap(arr, hi, ++i);
+        return i + 1;
+    }
+
+    sort ( arr, lo, hi ) {
+        if ( lo >= hi ) return;
+        let pIdx = this.#partition(arr, lo, hi);
+        this.sort(arr, lo, pIdx - 1);
+        this.sort(arr, pIdx + 1, hi);
     }
 }
 
