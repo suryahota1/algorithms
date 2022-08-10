@@ -8,19 +8,10 @@ class QuickSort {
 
     #partition ( arr, lo, hi ) {
         let i = lo - 1, pivot = arr[hi];
-        // for ( let j = 0; j < hi; j++ ) {
-        //     if ( arr[j] < pivot ) this.#swap(arr, ++i, j);
-        // }
-
-        for ( let j = lo; j <= hi; j++ ) {
-            if ( arr[j] < pivot ) {
-                this.#swap(arr, j, ++i);
-            }
-        }
-
-        // this.#swap(arr, i + 1, hi);
+        for ( let j = lo; j <= hi; j++ )
+            if ( arr[j] < pivot ) this.#swap(arr, j, ++i);
         this.#swap(arr, hi, ++i);
-        return i + 1;
+        return i;
     }
 
     sort ( arr, lo, hi ) {
