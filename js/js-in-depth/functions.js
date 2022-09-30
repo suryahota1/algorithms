@@ -1,4 +1,4 @@
-const a = () => {};
+a = () => {};
 const b = function* () {};
 const c = class {};
 
@@ -12,7 +12,7 @@ const arr = [1];
 // });
 
 const f1 = function (cb=() => {}) {
-    console.log("cbname", cb.name);
+    // console.log("cbname", cb.name);
     return function () {
 
     }
@@ -31,4 +31,10 @@ const obj = {
     [f4]: 4,
     [f5]: 5
 };
-console.log("obj = ", obj);
+// console.log("obj = ", obj);
+
+const arrow1 = () => {
+    console.log("wrewre", this);
+};
+const arrow2 = arrow1.bind(obj);
+arrow1();
