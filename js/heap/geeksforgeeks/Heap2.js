@@ -9,4 +9,6 @@
     true for the child nodes. Min heap is where the root is smallest amongst its children and it
     is recursively true for the child nodes.
     7. Operations performed on heap is Heapify, Insert, Delete, Peek.
+    8. Heapify is the process with which we convert an imbalanced tree into a balanced heap data 
+    structure. It takes O(log N) time.
 */
