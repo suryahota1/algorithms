@@ -10,7 +10,7 @@ class MaxHeap1 {
     constructor ( maxSize ) {
         this.maxSize = maxSize;
         this.heapSize = 0;
-        this.heap = [];
+        this.heap = new Array(maxSize);
     }
 
     getLeftChild ( idx ) {
