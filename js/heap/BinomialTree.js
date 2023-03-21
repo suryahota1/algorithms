@@ -43,10 +43,6 @@ class BinomialTree1 {
     async constructTree () {
         return this.root = await this.#createTree(this.order);
     }
-
-    printTree () {
-
-    }
 }
 
 
