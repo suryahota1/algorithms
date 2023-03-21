@@ -37,9 +37,20 @@ class BinomialTree1 {
         const root1 = await this.#createTree(k - 1);
         const root2 = await this.#createTree(k - 1);
         root1.children.unshift(root2);
+        return root1;
     }
 
     async constructTree () {
-        return await this.#createTree(this.order);
+        return this.root = await this.#createTree(this.order);
+    }
+
+    printTree () {
+
     }
 }
+
+
+const bt = new BinomialTree1(4);
+bt.constructTree().then(( root ) => {
+    console.log(root.data);
+});
