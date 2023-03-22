@@ -35,7 +35,21 @@ CheckIfBinaryTreeIsHeap.prototype.checkIfTreeIsCompleteIterativeApproach1 = func
 }
 
 CheckIfBinaryTreeIsHeap.prototype.checkIfTreeIsComplete = function () {
+    return this.checkIfTreeIsCompleteIterativeApproach1(this.root);
+}
 
+CheckIfBinaryTreeIsHeap.prototype.isMaxHeapUtil = function ( root ) {
+    if ( root.right === null && root.left === null ) return true;
+    if ( root.right === null ) return root.data >= root.left.data;
+    if ( root.data >= root.left.data && root.data >= root.right.data ) return this.isMaxHeapUtil(root.left) && this.isMaxHeapUtil(root.right);
+    return false;
+}
+
+CheckIfBinaryTreeIsHeap.prototype.isHeap = function () {
+    if ( this.root === null ) return true;
+    const isComplete = this.checkIfTreeIsComplete();
+    if ( !isComplete ) return false;
+    return this.isMaxHeapUtil(this.root);
 }
 
 export default CheckIfBinaryTreeIsHeap;
