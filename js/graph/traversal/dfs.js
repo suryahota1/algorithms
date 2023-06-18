@@ -1,19 +1,21 @@
 class Dfs {
 
-    #recTrversal ( node, adjList, visited ) {
+    recTrversal ( node, adjList, visited ) {
         visited[node] = true;
         console.log(node);
         adjList[node].forEach(element => {
-            if ( !visited[element] ) this.#recTrversal(element, adjList, visited);
+            if ( !visited[element] ) this.recTrversal(element, adjList, visited);
         });
     }
 
     traverse ( numOfNode, adjList ) {
         const visited = new Array(numOfNode + 1).fill(false);
         const startNode = 1;
-        this.#recTrversal(startNode, adjList, visited);
+        this.recTrversal(startNode, adjList, visited);
     }
 }
+
+module.exports = Dfs;
 
 /* 
     Space complexity: 
