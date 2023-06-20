@@ -12,3 +12,20 @@ class ProductArrayExceptSelf {
         return nums;
     }
 }
+
+class OptimizedProductArrayExceptSelf {
+    productExceptSelf( nums ) {
+        const ans = new int[nums.length];
+        let mul1 = 1;
+        for ( let i = 0; i < nums.length; i++ ) {
+            ans[i] = mul1;
+            mul1 = nums[i] * mul1;
+        }
+        mul1 = 1;
+        for ( let i = nums.length - 1; i >= 0; i-- ) {
+            ans[i] *= mul1;
+            mul1 = nums[i] * mul1;
+        }
+        return ans;
+    }
+}
