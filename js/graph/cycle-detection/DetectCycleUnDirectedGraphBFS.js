@@ -34,5 +34,3 @@ const obj4 = new DetectCycleUnDirectedGraph();
 const ip1 = [[1], [0, 2, 4], [1, 3], [2, 4], [1, 3]];
 const ip2 = [[], [2], [3, 1], [2]];
 console.log(obj4.detect(4, ip2));
-
-// Using BFS
