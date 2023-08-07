@@ -32,3 +32,44 @@ function createPerson ( name ) {
 const pObj = createPerson("Surya");
 pObj.name = "Hello";
 console.log(pObj.name);
+
+// ES5 prototypal inheritance
+function Person ( name ) {
+    this.name = name;
+}
+
+Person.prototype.describe = function () {
+    console.log(this.name);
+}
+
+function Employee ( name, title ) {
+    Person.call(this, name);
+    this.title = title;
+}
+
+Employee.prototype = Object.create(Person.prototype);
+Employee.prototype.greet = function () {
+    console.log("Hello " + this.title + this.name);
+}
+
+// Add readonly property to an object
+const obj1 = {};
+Object.defineProperty(obj1, "prop", {
+    value: 45,
+    writable: false
+});
+
+// Create an object with certain prototype
+const parProto = {};
+const newObj = Object.create(parProto, {
+    name: {
+        value: "Surya",
+        writable: false
+    },
+    age: {
+        value: 28,
+        configurable: false,
+        enumerable: false,
+        writable: true
+    }
+});
