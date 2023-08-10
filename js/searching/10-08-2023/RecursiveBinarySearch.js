@@ -8,5 +8,6 @@ function recSearch ( list, key, start, end ) {
 function recursiveBinarySearch ( list=[], key ) {
     return recSearch(list, key, 0, list.length - 1);
 }
+
 const ip = [9, 19, 31, 54, 98, 197, 435];
 console.log(recursiveBinarySearch(ip, 54));
