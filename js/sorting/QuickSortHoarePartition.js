@@ -24,6 +24,6 @@ function quickSort ( arr=[], start, end ) {
     quickSort(arr, partitionIdx + 1, end);
 }
 
-const ip = [13, 8, 8, 9, 199, 11, 54, 8, 12, 2, 13];
+const ip = [10, 5, 6, 20];
 quickSort(ip, 0, ip.length - 1);
 console.log(ip);
