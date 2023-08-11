@@ -4,7 +4,7 @@ function swapVal ( arr, i, j ) {
     arr[j] = temp;
 }
 
-// My approach
+// My approach - 1
 function approach1 ( arr=[] ) {
     let oddIdx = [];
     for ( let i = 0; i < arr.length; i++ ) {
@@ -18,6 +18,26 @@ function approach1 ( arr=[] ) {
     }
 }
 
-const ip = [9, 19, 31, 54, 98, 197, 435];
-approach1(ip)
+// Two pointer technique
+
+function isEven ( n ) {
+    return n % 2 === 0;
+}
+
+function approach2 ( arr=[] ) {
+    if ( arr.length <= 1 ) return;
+    let oddPtr = 0, evenPtr = arr.length - 1;
+    do {
+        if ( isEven(arr[oddPtr]) ) oddPtr++;
+        if ( !isEven(arr[evenPtr]) ) evenPtr--;
+        if ( !isEven(arr[oddPtr]) && isEven(arr[evenPtr]) ) {
+            swapVal(arr, oddPtr, evenPtr);
+            oddPtr++;
+            evenPtr--;
+        }
+    } while ( oddPtr < evenPtr )
+}
+
+const ip = [98, 19, 31, 54, 98, 197, 436];
+approach2(ip)
 console.log(ip);
