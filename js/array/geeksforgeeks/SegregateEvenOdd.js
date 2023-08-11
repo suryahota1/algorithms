@@ -18,7 +18,11 @@ function approach1 ( arr=[] ) {
     }
 }
 
-// Two pointer technique
+/**
+ * Two pointer technique
+ * Time complexity: O(n)
+ * Space complexity: O(1)
+*/
 
 function isEven ( n ) {
     return n % 2 === 0;
@@ -38,6 +42,18 @@ function approach2 ( arr=[] ) {
     } while ( oddPtr < evenPtr )
 }
 
-const ip = [98, 19, 31, 54, 98, 197, 436];
-approach2(ip)
+/**
+ * Lomuto's partition logic, quick sort partition logic
+*/
+
+function approach3 ( arr=[] ) {
+    if ( arr.length <= 1 ) return;
+    let swapIdx = -1;
+    for ( let i = 0; i < arr.length; i++ ) {
+        if ( arr[i] % 2 === 0 ) swapVal(arr, ++swapIdx, i);
+    }
+}
+
+const ip = [99, 19, 31, 54, 98, 197, 436];
+approach3(ip);
 console.log(ip);
