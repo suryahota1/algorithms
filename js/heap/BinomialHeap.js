@@ -27,7 +27,8 @@ class BinomialHeap {
     }
 
     getMin () {
-
+        if ( this.minNode ) return this.minNode.key;
+        return null;
     }
 
     extractMin () {
@@ -74,7 +75,7 @@ class BinomialHeap {
                     const prevChild = x.child;
                     x.child = nx;
                     nx.sibling = prevChild;
-                    
+
                     x.sibling = snx;
                     nx = snx;
                     snx = nx?.sibling;
@@ -92,11 +93,12 @@ class BinomialHeap {
     }
 
     delete ( node ) {
-
+        
     }
 
-    decreaseKey ( node ) {
-
+    decreaseKey ( node, newKey ) {
+        node.key = newKey;
+        this.bubbleUp(node);
     }
 
     insert ( key ) {
@@ -108,7 +110,23 @@ class BinomialHeap {
         this.union(newHeap);
     }
 
-    bubbleUp () {
+    bubbleUp ( node ) {
+        let parent = node.parent;
+        while ( parent && node.key < parent.key ) {
+            const grandParent = parent.parent;
+            const child = node.child;
+            const nodeSibling = node.sibling;
+            const parentSibling = parent.sibling;
 
+            node.parent = grandParent;
+            node.sibling = parentSibling;
+            node.child = parent;
+            node.degree = parent.degree;
+
+            parent.parent = node;
+            parent.sibling = nodeSibling;
+            parent.child = child;
+            parent.degree = node.degree;
+        }
     }
 }

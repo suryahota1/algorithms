@@ -73,3 +73,28 @@ const newObj = Object.create(parProto, {
         writable: true
     }
 });
+
+
+
+// Inheriting own properties
+function extend ( target, source ) {
+    Object.getOwnPropertyNames(source).forEach(propName => {
+        Object.defineProperty(target, propName, Object.getOwnPropertyDescriptor(source, propName));
+    });
+}
+
+// Shim for Object.create
+Object.create = Object.create ?? function ( proto ) {
+    function Temp () {};
+    Temp.prototype = proto;
+    return new Temp();
+}
+
+// Inherit function
+
+function inherits ( SubC, SuperC ) {
+    const SubProto = Object.create(SuperC);
+    extend(SubProto, SubC);
+    SubC.prototype = SubProto;
+    SubC.prototype.constructor = SubC;
+}
