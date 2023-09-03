@@ -76,6 +76,90 @@ class BST {
             console.log(val.join(", "));
         }
     }
+
+    rightView () {
+        if ( this.root === null ) return;
+        const queue = [ this.root ];
+        let currCount = 1, nextCount = 0;
+        while ( queue.length > 0 ) {
+            const currNode = queue.shift();
+            // console.log("currNode.key", currNode.key);
+            currCount--;
+            if ( currNode.left ) {
+                queue.push(currNode.left);
+                nextCount++;
+            }
+            if ( currNode.right ) {
+                queue.push(currNode.right);
+                nextCount++;
+            }
+            if ( currCount === 0 ) {
+                console.log(currNode.key);
+                currCount = nextCount;
+                nextCount = 0;
+            }
+        }
+    }
+
+    rightViewRecUtil ( root, currLevl, maxLevel ) {
+        if ( root === null ) return;
+        if ( currLevl > maxLevel.c ) {
+            console.log(root.key);
+            maxLevel.c = currLevl;
+        }
+        this.rightViewRecUtil(root.right, currLevl + 1, maxLevel);
+        this.rightViewRecUtil(root.left, currLevl + 1, maxLevel);
+    }
+
+    rightViewRecursive () {
+        let maxLevel = { c: 0 };
+        this.rightViewRecUtil(this.root, 1, maxLevel);
+    }
+
+    leftViewRecUtil ( root, currLevl, maxLevel ) {
+        if ( root === null ) return;
+        if ( currLevl > maxLevel.c ) {
+            console.log(root.key);
+            maxLevel.c = currLevl;
+        }
+        this.leftViewRecUtil(root.left, currLevl + 1, maxLevel);
+        this.leftViewRecUtil(root.right, currLevl + 1, maxLevel);
+    }
+
+    leftViewRecursive () {
+        let maxLevel = { c: 0 };
+        this.leftViewRecUtil(this.root, 1, maxLevel);
+    }
+
+    #deleteNodeRec ( root, key ) {
+        if ( root === null ) return root;
+        if ( key < root.key ) root.left = this.#deleteNodeRec(root.left, key);
+        else if ( key > root.key ) root.right = this.#deleteNodeRec(root.right, key);
+        else {
+            if ( root.left === null && root.right === null ) return null;
+            if ( root.left === null ) {
+                const temp = root.right;
+                root.right = null;
+                return temp;
+            }
+            if ( root.right === null ) {
+                const temp = root.left;
+                root.left = null;
+                return temp;
+            }
+            const temp = root.right;
+            const inOrderSuccessor = root.right;
+            while ( inOrderSuccessor.left !== null ) inOrderSuccessor = inOrderSuccessor.left;
+            inOrderSuccessor.left = root.left;
+            root.left = null;
+            root.right = null;
+            return temp;
+        }
+    }
+
+    deleteNode ( key ) {
+        return this.#deleteNodeRec(this.root, key);
+    }
 }
 
 /**
@@ -96,5 +180,5 @@ class BST {
     bst.insert(60);
     bst.insert(80);
 
-    bst.levelOrder();
+    bst.leftViewRecursive();
 }());
