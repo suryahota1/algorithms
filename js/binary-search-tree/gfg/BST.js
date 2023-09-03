@@ -39,6 +39,43 @@ class BST {
         console.log(root.key);
         this.inOrder(root.right);
     }
+
+    preOrder ( root=this.root ) {
+        if ( root === null ) return;
+        console.log(root.key);
+        this.preOrder(root.left);
+        this.preOrder(root.right);
+    }
+
+    postOrder ( root=this.root ) {
+        if ( root === null ) return;
+        this.postOrder(root.left);
+        this.postOrder(root.right);
+        console.log(root.key);
+    }
+
+    heiht ( root=this.root ) {
+        if ( root === null ) return 0;
+        return Math.max(1 + this.heiht(root.left), 1 + this.heiht(root.right));
+    }
+
+    printGivenLevel ( root, level ) {
+        if ( root === null || level === 0) return [];
+        if ( level !== 1 ) {
+            let resp = [];
+            resp = resp.concat(this.printGivenLevel(root.left, level - 1));
+            resp = resp.concat(this.printGivenLevel(root.right, level - 1));
+            return resp;
+        } else if ( level === 1 ) return [root.key];
+    }
+
+    levelOrder () {
+        const height = this.heiht();
+        for ( let i = 1; i <= height; i++ ) {
+            const val = this.printGivenLevel(this.root, i);
+            console.log(val.join(", "));
+        }
+    }
 }
 
 /**
@@ -52,11 +89,12 @@ class BST {
 (function main () {
     const bst = new BST();
     bst.insert(50);
-    bst.insert(60);
-    bst.insert(70);
     bst.insert(30);
     bst.insert(20);
-    bst.insert(10);
+    bst.insert(40);
+    bst.insert(70);
+    bst.insert(60);
+    bst.insert(80);
 
-    bst.inOrder();
+    bst.levelOrder();
 }());
