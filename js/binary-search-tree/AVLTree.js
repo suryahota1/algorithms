@@ -55,13 +55,7 @@ class AVLTree {
         return leftOfRoot;
     }
 
-    insert ( root, key ) {
-        if ( root === null ) return new AVLNode(key);
-
-        if ( key < root.key ) root.left = this.insert(root.left, key);
-        else if ( key > root.key ) root.right = this.insert(root.right, key);
-        else return root;
-
+    restoreHeightAndBalance ( root, key ) {
         root.height = 1 + Math.max(this.getHeight(root.left), this.getHeight(root.right));
         const bf = this.getBalanceFactor(root);
 
@@ -79,6 +73,48 @@ class AVLTree {
         return root;
     }
 
+    insert ( root, key ) {
+        if ( root === null ) return new AVLNode(key);
+
+        if ( key < root.key ) root.left = this.insert(root.left, key);
+        else if ( key > root.key ) root.right = this.insert(root.right, key);
+        else return root;
+
+        return this.restoreHeightAndBalance(root, key);
+    }
+
+    delete ( root, key ) {
+        if ( root === null ) return root;
+        if ( key < root.key ) root.left = this.delete(root.left, key);
+        else if ( key > root.key ) root.right = this.delete(root.right, key);
+        else {
+            if ( root.left === null && root.right === null ) {
+                root.key = null;
+                root.height = null;
+                return null;
+            } else if ( root.left === null ) {
+                const temp = root.right;
+                root.right = null;
+                root.key = null;
+                root.height = null;
+                return temp;
+            } else if ( root.right === null ) {
+                const temp = root.left;
+                root.left = null;
+                root.key = null;
+                root.height = null;
+                return temp;
+            } else {
+                const inOrderSuccessor = root.right;
+                while( inOrderSuccessor.left !== null ) inOrderSuccessor = inOrderSuccessor.left;
+                root.key = inOrderSuccessor.key;
+                root.right = this.delete(root.right, inOrderSuccessor.key);
+            }
+        }
+        if ( root === null ) return root;
+        return this.restoreHeightAndBalance(root, key);
+    }
+
     preOrder ( root ) {
         if ( root === null ) return;
         console.log(root.key);
@@ -91,12 +127,24 @@ class AVLTree {
 (function () {
     const tree = new AVLTree();
  
+    // tree.root = tree.insert(tree.root, 10);
+    // tree.root = tree.insert(tree.root, 20);
+    // tree.root = tree.insert(tree.root, 30);
+    // tree.root = tree.insert(tree.root, 40);
+    // tree.root = tree.insert(tree.root, 50);
+    // tree.root = tree.insert(tree.root, 25);
+
+    tree.root = tree.insert(tree.root, 9);
+    tree.root = tree.insert(tree.root, 5);
     tree.root = tree.insert(tree.root, 10);
-    tree.root = tree.insert(tree.root, 20);
-    tree.root = tree.insert(tree.root, 30);
-    tree.root = tree.insert(tree.root, 40);
-    tree.root = tree.insert(tree.root, 50);
-    tree.root = tree.insert(tree.root, 25);
+    tree.root = tree.insert(tree.root, 0);
+    tree.root = tree.insert(tree.root, 6);
+    tree.root = tree.insert(tree.root, 11);
+    tree.root = tree.insert(tree.root, -1);
+    tree.root = tree.insert(tree.root, 1);
+    tree.root = tree.insert(tree.root, 2);
+
+    tree.root = tree.delete(tree.root, 10);
 
     tree.preOrder(tree.root);
 }());
