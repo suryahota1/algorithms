@@ -60,3 +60,46 @@ const obj2 = {
 console.log(obj2.prop);
 obj2.prop = 4; // Throws Error in strict mode
 console.log(obj2.prop);
+
+
+// Object.assign polyfill
+function copyOwnProps ( target, ...sources ) {
+    for ( const source of sources ) {
+        const ownKeys = Reflect.ownKeys(source);
+        for ( const ownKey of ownKeys ) {
+            const propDesc = Object.getOwnPropertyDescriptor(source, ownKey);
+            Object.defineProperty(target, ownKey, propDesc);
+        }
+    }
+}
+
+
+// Object.create
+const proto = {
+    key1: 1234
+};
+const o1 = Object.create(proto, {
+    foo: {
+        value: 123, 
+        enumerable: true, 
+        configurable: true, 
+        writable: true
+    }, 
+    bar: {
+        enumerable: true, 
+        configurable: true, 
+        get() {
+            return 78;
+        },
+        set( val ) {
+            console.log("To set value");
+        },
+        writable: true
+    }
+});
+
+// Object.assign
+// Assigns all enumerable own properties from one or more sources into a target object
+// It uses [[Get]] and [[Set]] internal methods and hence uses getter and setters. So It is using
+// property assignment rather than propery defining
+// Both string and symbol properties are copied

@@ -67,3 +67,22 @@ const validator = {
 
 const proxy1 = new Proxy({}, validator);
 proxy1.age = 230;
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////
+
+const targetObj = {
+    prop1: "valu1", 
+    prop2: "valu2"
+};
+
+const proxyRef = new Proxy(targetObj, {
+    get() {
+        
+    }
+})
