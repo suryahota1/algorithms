@@ -277,3 +277,90 @@ for ( const k of v ) {
     break;
 }
 console.log(v.next());
+
+
+// Iterable as iterator
+
+const myIterable = {
+	[Symbol.iterator]() {
+		return this;
+	},
+	next() {
+
+	}
+};
+
+
+// Return from an iterator
+
+const itrbObj1 = {
+	[Symbol.iterator]() {
+		let i = 0;
+		return {
+			next() {
+				console
+				if ( ++i < 4 ) return { value: i };
+				else return { done: true };
+			}, 
+			return() {
+				console.log("Cleaning up");
+				return { done: true };
+			}
+		}
+	}
+}
+
+for ( const t of itrbObj1 ) {
+	console.log(t);
+}
+
+// id maker 
+function* idMaker () {
+	let i = 0;
+	while ( true ) {
+		yield i++;
+	}
+}
+
+// Making all instances of a class as iterable
+
+class MyItrClass {
+	#data;
+	constructor ( data ) {
+		this.#data = data;
+	}
+	[Symbol.iterator]() {
+		let i = 0;
+		const context = this;
+		return {
+			next() {
+				if ( i < context.#data.length ) {
+					return { value: context.#data[i++] };
+				} else {
+					return { done: true };
+				}
+			}
+		}
+	}
+}
+
+const in1 = new MyItrClass([1, 2, 3, 4, 5]);
+for ( const v of in1 ) {
+	console.log(v);
+}
+
+// Iterable using generator function
+
+const myIterable2 = {
+	from: 1, 
+	to: 5, 
+	*[Symbol.iterator]() {
+		for ( let i = this.from; i <= this.to; i++ ) {
+			yield i;
+		}
+	}
+}
+
+for ( const v of myIterable2 ) {
+	console.log(v);
+}

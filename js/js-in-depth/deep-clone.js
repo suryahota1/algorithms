@@ -38,3 +38,16 @@ const val2 = {
 };
 
 console.log(checkIfDeepEqual(val1, val2));
+
+// Implement a function to highlight text if a searched term appears within it.
+function checkIfTextAppears ( inputText, searchText ) {
+    let ptr1 = 0, ptr2 = 0;
+    while ( ptr2 < searchText.length && ptr1 < inputText.length ) {
+        if ( searchText[ptr2] === inputText[ptr1] ) {
+            ptr1++;
+            ptr2++;
+        } else ptr1++;
+    }
+    if ( ptr2 < searchText.length ) return false;
+    return true;
+}

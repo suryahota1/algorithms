@@ -199,3 +199,40 @@ async function test() {
 test().then(function(message) {
     console.log(message);
 });
+
+
+// Promise.any
+function promiseAny ( promises=[] ) {
+    let status = false;
+    return new Promise(( resolve, reject ) => {
+        for ( let i = 0; i < promises.length; i++ ) {
+            Promise.resolve(promises[i]).then(resp => {
+                if ( !status ) resolve(resp);
+            }).catch(err => {
+                if ( !status ) reject(err);
+            }).finally(() => {
+                status = true;
+            });
+        }
+    });
+}
+
+// Promise.allSetteled
+function promiseAllSetteled ( promises=[] ) {
+    return new Promise(( resolve, reject ) => {
+        let respArr = new Array(promises.length), c = 0;
+        if ( promises.length === 0 ) resolve(respArr);
+        for ( let i = 0; i < promises.length; i++ ) {
+            Promise.resolve(promises[i]).then(resp => {
+                c++;
+                respArr[i] = resp;
+            }).catch(err => {
+                c++;
+                respArr[i] = err;
+            }).finally(() => {
+                if ( c === promises.length ) resolve(respArr);
+            });
+        }
+    });
+    Promise.all
+}
