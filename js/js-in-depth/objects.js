@@ -103,3 +103,46 @@ const o1 = Object.create(proto, {
 // It uses [[Get]] and [[Set]] internal methods and hence uses getter and setters. So It is using
 // property assignment rather than propery defining
 // Both string and symbol properties are copied
+
+
+// Custom new Operator in JavaScript
+
+function newOperator ( ConstrFn, ...args ) {
+    const thisValue = Object.create(ConstrFn.prtotype);
+    const result = ConstrFn.apply(thisValue, args);
+    if ( typeof result === "object" && result !== null ) return result;
+    return thisValue;
+}
+
+// Create a function in super constructor that helps creating objects of any child constructor
+// whoever requests
+
+function SuperConstr () {
+
+}
+
+SuperConstr.prototype.createInstance = function ( ...args ) {
+    return new this.constructor.apply(this, args);
+}
+
+// Crockford privacy pattern 
+
+function ConstrFn2 () {
+
+    // Private state
+    const privateVar = [];
+
+    // Private method
+    function privateMethod () {
+
+    }
+
+    // Priviledged methods, accessible publicly and have access to private data
+    this.add = function ( item ) {
+        privateVar.push(item);
+    }
+
+    this.remove = function () {
+        privateVar.shift();
+    }
+}
