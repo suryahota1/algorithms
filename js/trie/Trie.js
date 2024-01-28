@@ -41,20 +41,35 @@ class Trie {
         let root = this.root;
         for ( let i = 0; i < key.length; i++ ) {
             const idx = key.charCodeAt(i) - 97;
-            if ( !root.children[idx] ) return false;
+            if ( !root.children[idx] ) return { root, isFound: false };
             root = root.children[idx];
         }
-        return root.prefixCount > 0;
+        return { root, isFound: root.prefixCount > 0 };
+    }
+
+    searchPartOfWord ( word ) {
+        let root = this.root;
+        for ( let i = 0; i < word.length; i++ ) {
+            const idx = word.charCodeAt(i) - 97;
+            if ( !root.children[idx] ) {
+                if ( root.wordEndCount > 0 ) {
+                    return { root, isFound: false, partial: true, idx: i };
+                }
+                return { root, isFound: false, partial: false };
+            }
+            root = root.children[idx];
+        }
+        return { root, isFound: root.wordEndCount > 0 || root.prefixCount > 0, partial: false };
     }
 
     searchWord ( word ) {
         let root = this.root;
         for ( let i = 0; i < word.length; i++ ) {
             const idx = word.charCodeAt(i) - 97;
-            if ( !root.children[idx] ) return false;
+            if ( !root.children[idx] ) return { root, isEnding: false };
             root = root.children[idx];
         }
-        return root.wordEndCount > 0;
+        return { root, isEnding: root.wordEndCount > 0 };
     }
 
     #deleteCurrWord ( root, word, keyIdx ) {
@@ -110,6 +125,40 @@ class Trie {
         }
         return str;
     }
+
+    checkIfPalindromStringsExist ( arr ) {
+        return arr.some(item => {
+            const revStr = reverseString(item);
+            console.log("revStr", revStr);
+            const foundStat = this.searchPartOfWord(revStr);
+            console.log("isEnding", foundStat.isFound, foundStat.partial, foundStat.idx);
+            if ( foundStat.isFound ) {
+                return this.#checkIfRemainingStringIsPalindrome(foundStat.root);
+            } else if ( foundStat.partial ) {
+                const res = revStr.substr(foundStat.idx);
+                console.log("partial string", item, res);
+                const stat = isStringPalindrome();
+                console.log("partial string", stat);
+                return stat;
+            }
+        });
+    }
+
+    #checkIfRemainingStringIsPalindrome ( root, str="" ) {
+        console.log("checkIfRemainingStringIsPalindrome", str);
+        if ( root.wordEndCount > 0 && str.length > 0 ) {
+            const isPal = isStringPalindrome(str);
+            if ( isPal ) return true;
+        }
+        if ( root.prefixCount === 0 ) return false;
+        for ( let i = 0; i < root.children.length; i++ ) {
+            if ( root.children[i] ) {
+                str += String.fromCharCode(i + 97);
+                if ( this.#checkIfRemainingStringIsPalindrome(root.children[i], str) ) return true;
+            }
+        }
+        return false;
+    }
 }
 
 try {
@@ -130,14 +179,44 @@ try {
     // trObj.insert("and");
     // console.log("tri contains prefix and", trObj.searchWord("and"));
 
-    trObj.insert("geeksforgeeks");
-    trObj.insert("geeks");
-    trObj.insert("geek");
-    trObj.insert("geezer");
+    // trObj.insert("geeksforgeeks");
+    // trObj.insert("geeks");
+    // trObj.insert("geek");
+    // trObj.insert("geezer");
 
-    console.log("tri contains prefix and", trObj.searchWord("april"));
+    // console.log("tri contains prefix and", trObj.searchWord("april"));
 
-    console.log("getLongestCommonPrefix", trObj.getLongestCommonPrefix());
+    // console.log("getLongestCommonPrefix", trObj.getLongestCommonPrefix());
+
+    const arr = ["abc", "xyxcba", "geekst", "or", "keeg", "bc"];
+    for ( let i = 0; i < arr.length; i++ ) {
+        trObj.insert(arr[i]);
+    }
+
+    console.log(trObj.checkIfPalindromStringsExist(arr));
 } catch ( e ) {
     console.log("Error in Trie", e);
+}
+
+function reverseString ( str="" ) {
+    str = str.split("");
+    // console.log("before reverseString", str);
+    let i = 0, j = str.length - 1;
+    while ( i < j ) {
+        const temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+        i++;
+        j--;
+    }
+    // console.log("after reverseString", str);
+    return str.join("");
+}
+
+function isStringPalindrome ( str="" ) {
+    let i = 0; j = str.length - 1;
+    while ( i < j ) {
+        if ( str[i++] !== str[j--] ) return false;
+    }
+    return true;
 }
