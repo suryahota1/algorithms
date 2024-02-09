@@ -36,3 +36,15 @@ function stableSelectionSort ( list ) {
 
 stableSelectionSort(ip);
 console.log(ip);
+
+
+
+function selSort2 ( arr ) {
+    for ( let i = 0; i < arr.length; i++ ) {
+        let minIdx = i;
+        for ( let j = i; j < arr.length; j++ ) {
+            if ( arr[j] < arr[minIdx] ) minIdx = j;
+        }
+        [arr[i], arr[j]] = [arr[j], arr[i]]
+    }
+}
