@@ -9,7 +9,7 @@ class HuffmanNode {
     }
 }
 
-// No an actual PriorityQueue, an array with sorting
+// Not an actual PriorityQueue, an array with sorting
 class PriorityQueue {
 
     heap;
