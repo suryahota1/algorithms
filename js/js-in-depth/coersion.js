@@ -27,3 +27,28 @@ function toPrimitive ( input, hint ) {
         throw new TypeError();
     }
 }
+
+function toPropertyKey ( key ) {
+    if ( typeof key === "symbol" ) return key;
+    const primitive = toPrimitive(key);
+    return String(primitive);
+}
+
+function toNumeric ( input ) {
+    // Handles both number and bigint
+    const primVal = toPrimitive(input, "number");
+    if ( typeof primVal === "bigint" ) return primVal;
+    return Number(input);
+}
+
+function toNumber ( input ) {
+    if ( typeof input === "undefined" ) return NaN;
+    if ( input === null ) return +0;
+    if ( input === true ) return 1;
+    if ( input === false ) return 0;
+    if ( typeof input === "symbol" ) return new TypeError();
+    if ( typeof input === "bigint" ) return new TypeError();
+    if ( typeof input === "number" ) return input;
+    if ( typeof input === "string" ) return Number(input);
+    return toNumber(toPrimitive(input, "number"));
+}
