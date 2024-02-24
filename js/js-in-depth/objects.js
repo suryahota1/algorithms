@@ -146,3 +146,19 @@ function ConstrFn2 () {
         privateVar.shift();
     }
 }
+
+// interface DataPropertyDescriptor {
+//     value?: any, 
+//     writable?: Boolean, 
+//     enumerable?: Boolean, 
+//     configurable?: Boolean, 
+// }
+
+// interface AccessorPropertyDescriptor {
+//     get?: () => any, 
+//     set?: () => any, 
+//     enumerable?: Boolean, 
+//     configurable?: Boolean, 
+// }
+
+// type PropertyDescriptor = DataPropertyDescriptor | AccessorPropertyDescriptor;
