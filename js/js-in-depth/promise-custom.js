@@ -59,6 +59,7 @@ class ToyPromise {
                     setTimeout(() => {
                         if ( successCb && typeof successCb === "function" ) {
                             const resp = successCb(this.value);
+                            // Consider if resp is theneable
                             if ( resolve && typeof resolve === "function" ) resolve(resp);
                         } else {
                             if ( resolve && typeof resolve === "function" ) resolve(this.value);
@@ -68,6 +69,7 @@ class ToyPromise {
                     setTimeout(() => {
                         if ( errorCb && typeof errorCb === "function" ) {
                             const resp = errorCb(this.value);
+                            // Consider if resp is theneable
                             if ( resolve && typeof resolve === "function" ) resolve(resp);
                         } else {
                             if ( reject && typeof reject === "function" ) reject(this.value);
@@ -78,6 +80,7 @@ class ToyPromise {
                 this.successCb.push(() => {
                     if ( successCb && typeof successCb === "function" ) {
                         const resp = successCb(this.value);
+                        // Consider if resp is theneable
                         if ( resolve && typeof resolve === "function" ) resolve(resp);
                     } else {
                         if ( resolve && typeof resolve === "function" ) resolve(this.value);
@@ -86,6 +89,7 @@ class ToyPromise {
                 this.errorCb.push(() => {
                     if ( errorCb && typeof errorCb === "function" ) {
                         const resp = errorCb(this.value);
+                        // Consider if resp is theneable
                         if ( resolve && typeof resolve === "function" ) resolve(resp);
                     } else {
                         if ( reject && typeof reject === "function" ) reject(this.value);
