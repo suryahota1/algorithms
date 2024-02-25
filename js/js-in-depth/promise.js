@@ -234,5 +234,4 @@ function promiseAllSetteled ( promises=[] ) {
             });
         }
     });
-    Promise.all
 }
