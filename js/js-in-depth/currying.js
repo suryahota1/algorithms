@@ -34,6 +34,13 @@ const curry = ( fn ) => {
     return curriedFn;
 };
 
+// function infiniteCurry ( fn ) {
+//     return function curried ( ...args ) {
+//         if ( args.length === fn.length ) return fn(...args);
+//         return curried.bind(null, ...args);
+//     }
+// }
+
 const curr2type = ( fn ) => {
     return curried = ( ...args ) => {
         if ( args.length === fn.length ) return fn(...args);
