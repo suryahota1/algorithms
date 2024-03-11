@@ -34,3 +34,32 @@ const d1 = new Demo();
  *  }
  * 
 */
+
+
+// Private fields before es6 via WeakMap
+
+let MyClass
+{
+    const keyMap = new WeakMap();
+    const actionMap = new WeakMap();
+
+    MyClass = class {
+
+        constructor ( key, action ) {
+            keyMap.set(this, key);
+            actionMap.set(this, action);
+        }
+
+        dec( this ) {
+
+        }
+    }
+
+    function privateFn ( obj ) {
+        const keyVal = keyMap.get(obj);
+        if ( keyVal > 0 && --keyVal === 0 ) {
+            actionMap.get(obj)();
+            keyMap.set(obj, keyVal);
+        }
+    }
+}
