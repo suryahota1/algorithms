@@ -56,3 +56,7 @@ function findAllSccKosaraju ( n, edges ) {
 }
 
 findAllSccKosaraju(5, [[1, 0], [0, 2], [2, 1], [0, 3], [3, 4]]);
+
+/**
+ * Time complexity: O(V + E) + O(V + E) + O(V + E) = O(V + E)
+*/
