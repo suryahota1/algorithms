@@ -214,3 +214,21 @@ rev.reference.a++
 console.log(rev.reference.a);
 rev.revoke();
 console.log(rev.reference.a);
+
+// Proxy for a function
+
+function MyFunc ( ...args ) { return args.reduce(( accu, curr ) => accu + curr, 0) }
+
+// Make sure MyFunc is never constructor called and always called with numbers only
+
+const proxy4 = new Proxy(MyFunc, {
+    apply( target, receiver, args ) {
+        args.forEach(arg => {
+            if ( Number(arg) !== arg ) throw new Error("Only numbers supported");
+        });
+        return Reflect.apply(target, receiver, args);
+    },
+    construct() {
+        throw new Error("Can not be constructor called");
+    }
+});
