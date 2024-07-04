@@ -148,3 +148,121 @@ multicasted.subscribe({
 });
 
 multicasted.connect();
+
+// Pipeable functions
+function pipe ( ...fns ) {
+    return function ( ...args ) {
+        return fns.reduce((acc, curr) => curr(...acc), args);
+    }
+}
+
+// BehaviourSubject
+
+class BehaviourSubject {
+
+    observers;
+    latestValue;
+
+    constructor ( initialValue ) {
+        this.latestValue = initialValue;
+    }
+
+    subscribe ( observer ) {
+        this.observers.push(observer);
+        if ( this.initialValue ) {
+            observer.next(this.initialValue);
+        }
+        return {
+            unsubscribe: () => {
+                this.observers = this.observers.filter(ob => ob !== observer);
+            }
+        }
+    }
+
+    next ( data ) {
+        this.observers.forEach(observer => observer.next(data));
+    }
+}
+
+// ReplaySubject
+class ReplaySubject {
+
+    values;
+    bufferSize;
+    windowTime;
+    observers;
+
+    constructor ( bufferSize, windowTime ) {
+        this.values = [];
+        this.bufferSize = bufferSize;
+        this.windowTime = windowTime;
+    }
+
+    subscribe ( observer ) {
+        this.observers.push(observer);
+        if ( this.values.length > 0 ) {
+            this.values.forEach(value => observer.next(this.windowTime ? value[0] : value));
+        }
+        return {
+            unsubscribe: () => {
+                this.observers = this.observers.filter(ob => ob !== observer);
+            }
+        }
+    }
+
+    next ( data ) {
+        const timestamp = new Date().valueOf();
+        this.observers.forEach(observer => observer.next(data));
+        if ( this.windowTime ) {
+            let splitIdx;
+            for ( let i = this.values.length - 1; i >= 0; i-- ) {
+                if ( this.values[i][1] < timestamp - this.windowTime ) {
+                    splitIdx = i;
+                    break;
+                }
+            }
+            if ( splitIdx >= 0 ) {
+                this.values = this.values.slice(splitIdx + 1);
+            }
+        }
+        if ( this.values.length === this.bufferSize ) {
+            this.values.shift();
+        }
+        this.values.push(this.windowTime ? [data, timestamp] : data);
+    }
+}
+
+// AsyncSubject
+
+class AsyncSubject {
+
+    value;
+    observers;
+    done;
+
+    constructor () {
+        this.observers = [];
+        this.done = false;
+    }
+
+    subscribe ( observer ) {
+        if ( this.done ) return;
+        this.observers.push(observer);
+        return {
+            unsubscribe: () => {
+                this.observers = this.observers.filter(ob => ob !== observer);
+            }
+        }
+    }
+
+    next ( data ) {
+        if ( this.done ) return;
+        this.value = data;
+    }
+
+    complete () {
+        if ( this.done ) return;
+        this.done = true;
+        this.observers.forEach(observer => observer.next(data));
+    }
+}
