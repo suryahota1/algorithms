@@ -77,3 +77,74 @@ function from ( obj ) {
     else if ( obj.prototype[Symbol.iterator] ) return createObservableFromIterator(obj);
     throw new Error("Unknown type");
 }
+
+
+// Observer interface
+
+const Observer = {
+    next: data => console.log("Observer got next value " + data), 
+    error: err => console.log("Observer got an error " + err), 
+    complete: err => console.log("Observer got all values"), 
+}
+
+// Subscription interface
+
+const Subscription = {
+    unsubscribe: () => {
+        console.log("To unsubscribe observable execution");
+    }
+};
+
+// Subject
+// Observables are unicast whereas Subjects are multicast
+
+class Subject {
+    observers;
+    constructor () {
+        this.observers = [];
+    }
+
+    subscribe ( observer ) {
+        this.observers.push(observer);
+        return {
+            unsubscribe: () => {
+                this.observers = this.observers.filter(ob => ob !== observer);
+            }
+        }
+    }
+
+    next ( data ) {
+        this.observers.forEach(observer => observer.next(data));
+    }
+}
+
+// Multicasted observables
+
+class ConnectableObservable extends Observable {
+    subject;
+    constructor ( execFunc, subject ) {
+        super(execFunc);
+        this.subject = subject;
+    }
+
+    connect () {
+        this.subscribe(this.subject);
+    }
+}
+
+function multicast ( execFunc, subject ) {
+    return new ConnectableObservable(execFunc, subject);
+}
+
+const sourceObservable = from([a, 2, 3]);
+const subject = new Subject();
+const multicasted = sourceObservable.pipe(multicast(subject));
+
+multicasted.subscribe({
+    next: (d) => {}
+});
+multicasted.subscribe({
+    next: (d) => {}
+});
+
+multicasted.connect();
