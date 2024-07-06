@@ -324,3 +324,25 @@ function combineLatest ( ...observables ) {
         });
     });
 }
+
+// concat
+function concat ( ...observables ) {
+    function recSub ( index, subscriber ) {
+        if ( index === observables.length ) subscriber.complete();
+        observables[index].subscribe({
+            next: ( data ) => {
+                subscriber.next(data);
+            }, 
+            complete: () => {
+                recSub(++index, subscriber);
+            }, 
+            error: ( err ) => {
+                subscriber.error(err);
+            }
+        });
+    }
+    return new Observable(( subscriber ) => {
+        if ( !observables || observables.length === 0 ) subscriber.complete();
+        recSub(0, subscriber);
+    });
+}
