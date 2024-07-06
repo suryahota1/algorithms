@@ -266,3 +266,61 @@ class AsyncSubject {
         this.observers.forEach(observer => observer.next(data));
     }
 }
+
+// Operators implementation
+// Creation operators
+
+// range
+function range ( start, count=1 ) {
+    if ( isNaN(start) || isNaN(count) ) throw new Error("Invalid arguments");
+    return new Observable(( subscriber ) => {
+        let i = 0;
+        while ( i < count ) {
+            subscriber.next(start + i);
+        }
+        subscriber.complete();
+    });
+}
+
+// fromEvent
+function fromEvent ( target, eventName ) {
+    return new Observable(( subscriber ) => {
+        target.addEventListener(eventName, ( event ) => {
+            subscriber.next(event.target.value);
+        });
+    });
+}
+
+// combineLatest
+function combineLatest ( ...observables ) {
+    function unsubscribeAll () {
+        subscriptions.forEach(subscription =>subscriptions.unsubscribe());
+    }
+    if ( !observables || observables.length === 0 ) throw new Error("No observable available");
+    let receiverCount = 0, completionCount = 0;
+    const response = [];
+    let subscriptions = [];
+
+    return new Observable(( subscriber ) => {
+        observables.forEach(( observable, index ) => {
+            const subscription = observable.subscribe({
+                next: ( data ) => {
+                    if ( receiverCount < observables.length ) receiverCount++;
+                    response[index] = data;
+                    if ( receiverCount === observables.length ) subscriber.next(response);
+                }, 
+                complete: () => {
+                    if ( ++completionCount === observables.length ) {
+                        unsubscribeAll();
+                        subscriber.complete();
+                    }
+                }, 
+                error: ( err ) => {
+                    unsubscribeAll();
+                    subscriber.error(err);
+                }
+            });
+            subscriptions[index] = subscription;
+        });
+    });
+}
