@@ -24,6 +24,10 @@ class Edge {
     public int getV() {
         return v;
     }
+
+    public void setW(int w) {
+        this.w = w;
+    }
 }
 
 public class BellmanFord {
