@@ -11,7 +11,7 @@ public class MaxEdgeToAddDAGRemainsDAG {
 
         adjList.get(u).forEach(v -> {
             if ( !visited[v] ) {
-                topSortWithDFS(adjList, stack, visited, v);
+                topSortWithDFS(adjList, list, visited, v);
             }
         });
         list.add(u);
