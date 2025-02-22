@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/graph.iml" filepath="$PROJECT_DIR$/graph.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/graph.main.iml" filepath="$PROJECT_DIR$/.idea/modules/graph.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/graph.test.iml" filepath="$PROJECT_DIR$/.idea/modules/graph.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.example.graph.iml" filepath="$PROJECT_DIR$/.idea/modules/org.example.graph.iml" />
     </modules>
   </component>
 </project>

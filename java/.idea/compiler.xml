@@ -5,6 +5,7 @@
       <module name="graph" target="21" />
       <module name="graph.main" target="21" />
       <module name="graph.test" target="21" />
+      <module name="org.example.graph" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>
