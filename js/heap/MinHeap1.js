@@ -1,4 +1,4 @@
-class MinHeap1 {
+export class MinHeap1 {
 
     maxSize;
     heapSize;
@@ -77,5 +77,9 @@ class MinHeap1 {
             this.#moveElementToTop(idx);
             this.delete(0);
         }
+    }
+
+    size () {
+        return this.heapSize;
     }
 }
