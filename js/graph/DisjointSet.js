@@ -1,4 +1,4 @@
-class DisjointSet {
+export class DisjointSet {
     size;
     parent;
 
@@ -15,7 +15,7 @@ class DisjointSet {
     union ( u, v ) {
         const par_u = this.find(u);
         const par_v = this.find(v);
-        if ( par_u === par_v ) return;
+        if ( par_u === par_v ) return false;
         if ( this.size[par_u] > this.size[par_v] ) {
             this.parent[par_v] = par_u;
             this.size[par_u] += this.size[par_v];
@@ -23,5 +23,6 @@ class DisjointSet {
             this.parent[par_u] = par_v;
             this.size[par_v] += this.size[par_u];
         }
+        return true;
     }
 }
