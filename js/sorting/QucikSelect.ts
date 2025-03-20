@@ -1,5 +1,12 @@
 // Kth smallest/largest element
 
+/**
+ * The avarage case TC for this algorithm is O(n). This algorithm only recurs for one half. 
+ * O(n) + O(n / 2) + O(n / 4) + O(n / 8) +....
+ * = O(n) * (1 + (1 / 2) + (1 / 4) + (1 / 8) + .....)
+ * = O(n) as the series converges to 1
+ */
+
 function partition ( arr: Array<number>, left: number, right: number ) {
     let smallestIdx = left - 1, pivotNum = arr[right];
     for ( let i = left; i <= right; i++ ) {
