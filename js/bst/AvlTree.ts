@@ -119,6 +119,63 @@ class AVLTree<T> {
         this.root = this.balanceInsert(key, this.root);
     }
 
+    private getInOrderSuccessor ( node: BSTNode<T> ): TreeNode<T> {
+        let successor = node!.right;
+        while ( successor?.left ) {
+            successor = successor.left;
+        }
+        return successor!;
+    }
+
+    balanceDelete ( node: BSTNode<T>, key: T): BSTNode<T> {
+        if ( node === null ) return node;
+        const compareValue = this.comparator(key, node.key);
+        if ( compareValue === -1 ) {
+            return this.balanceDelete(node.left, key);
+        } else if ( compareValue === 1 ) {
+            return this.balanceDelete(node.right, key);
+        } else if ( node.left === null && node.right === null ) {
+            return null;
+        } else if ( node.left === null || node.right === null ) {
+            return node.left || node.right;
+        } else {
+            const inOrderSuccessor = this.getInOrderSuccessor(node);
+            node.key = inOrderSuccessor.key;
+            node.right = this.balanceDelete(node.right, inOrderSuccessor.key);
+        }
+        node.height = 1 + Math.max(this.getHeight(node.left), this.getHeight(node.right));
+
+        const balanceFactor = this.getBalanceFactor(node);
+
+        // LL
+        if ( balanceFactor > 1 && this.getBalanceFactor(node.left) >= 0 ) {
+            return this.rightRotate(node);
+        }
+
+        // LR
+        if ( balanceFactor > 1 && this.getBalanceFactor(node.left) < 0 ) {
+            node.left = this.leftRotate(node.left);
+            return this.rightRotate(node);
+        }
+
+        // RR
+        if ( balanceFactor  < -1 && this.getBalanceFactor(node.right) <= 0 ) {
+            return this.leftRotate(node);
+        }
+
+        // RL
+        if ( balanceFactor  < -1 && this.getBalanceFactor(node.right) > 0 ) {
+            node.right = this.rightRotate(node.right!);
+            return this.leftRotate(node);
+        }
+
+        return node;
+    }
+
+    delete ( key: T ): void {
+
+    }
+
     preOrder ( node: BSTNode<T> = this.root ) {
         if ( node === null ) {
             return;
